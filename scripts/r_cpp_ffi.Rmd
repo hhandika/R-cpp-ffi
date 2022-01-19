@@ -1,0 +1,56 @@
+---
+title: "C++ FFI"
+output: html_document
+---
+
+
+
+```{Rcpp}
+#include<Rcpp.h>
+#include <vector>
+
+//[[Rcpp::export]]
+int test(int x, int y) {
+  return x * y;
+}
+
+//[[Rcpp::export]]
+double run_fast(double x, double y) {
+  return x * y + x;
+}
+
+//[[Rcpp::export]]
+int sumCpp(std::vector<int> vec) {
+  int sum;
+  for (auto &i: vec) {
+    sum += i;
+  }
+  
+  return sum;
+}
+
+```
+
+
+```{r}
+test(1,3)
+run_fast(5,5)
+
+# vec <- c("1", "2", "3")
+
+sumR <- function(x) {
+  total <- 0
+  for (i in seq_along(x)) {
+    total <- total + x[i]
+  }
+  total
+  }
+
+sumR(1e5)
+
+library(microbenchmark)
+x <- runif(1e5)
+sumCpp(x)
+sumR(x)
+microbenchmark(sumR(x), sum(x), sumCpp(x))
+```
