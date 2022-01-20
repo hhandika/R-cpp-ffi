@@ -1,14 +1,14 @@
 library(Rcpp)
 
 cppFunction("
-int sumC(NumericVector vec) {
-  int sum;
-  for (auto &i: vec.size()) {
+double sumCpp(NumericVector vec) {
+  double sum;
+  for (auto &i: vec) {
     sum += i;
   }
   
   return sum;
 }")
 
-x <- runif(1e5)
+x <- c(1,2,3)
 sumCpp(x)
