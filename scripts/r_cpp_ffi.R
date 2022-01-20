@@ -22,6 +22,19 @@ cppFunction(
   }"
 )
 
+cppFunction(
+  "
+  Rcpp::NumericVector cumsumCpp(Rcpp::NumericVector vec) {
+    Rcpp::NumericVector res;
+    double sum = 0;
+    for (auto &i : vec) {
+      sum += i;
+      res.push_back(sum);
+    }
+    return res;
+  }"
+)
+
 sumR <- function(x) {
   total <- 0
   for (i in x) {
@@ -35,6 +48,8 @@ sumCpp(x)
 sumArr(x)
 sumR(x)
 
+cumsumCpp(x)
+
 y <- runif(1e5)
 microbenchmark::microbenchmark(
   sumR(y),
@@ -42,3 +57,10 @@ microbenchmark::microbenchmark(
   sumArr(y),
   sum(y)
   )
+
+microbenchmark::microbenchmark(
+  base::cumsum(y),
+  cumsumCpp(y)
+)
+
+
