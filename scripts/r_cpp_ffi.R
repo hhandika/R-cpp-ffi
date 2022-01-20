@@ -32,7 +32,6 @@ sumR <- function(x) {
 
 x <- c(1, 2, 3)
 sumCpp(x)
-sumCpp(x)
 sumArr(x)
 sumR(x)
 
