@@ -1,19 +1,45 @@
 library(Rcpp)
 library(microbenchmark)
 
-cppFunction("
+
+cppFunction(
+  "
 double sumCpp(Rcpp::NumericVector vec) {
   double sum;
   for (auto &i: vec) {
     sum += i;
   }
-  
+
   return sum;
-}")
+}"
+)
 
-x <- c(1,2,3)
+cppFunction(
+  "
+    double sumArr(Rcpp::NumericVector vec) {
+    double sum = 0;
+    return std::accumulate(vec.begin(), vec.end(), sum);
+  }"
+)
+
+sumR <- function(x) {
+  total <- 0
+  for (i in x) {
+    total <- total + i
+  }
+  total
+}
+
+x <- c(1, 2, 3)
 sumCpp(x)
-y <- runif(1e5)
-sumCpp(y)
+sumCpp(x)
+sumArr(x)
+sumR(x)
 
-microbenchmark::microbenchmark(sumCpp(y), sum(y))
+y <- runif(1e5)
+microbenchmark::microbenchmark(
+  sumR(y),
+  sumCpp(y), 
+  sumArr(y),
+  sum(y)
+  )
