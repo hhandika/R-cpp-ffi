@@ -35,6 +35,17 @@ cppFunction(
   }"
 )
 
+cppFunction("
+  double geomMeanCpp(Rcpp::NumericVector vec) {
+      int n = vec.size();
+      double sum_log = 0.0;
+      for (auto &i: vec) {
+        sum_log += log(i);
+      }
+      return exp(sum_log/n);
+    }
+")
+
 sumR <- function(x) {
   total <- 0
   for (i in x) {
@@ -43,24 +54,37 @@ sumR <- function(x) {
   total
 }
 
+geomMeanR <- function(x) {
+  exp(mean(log(x)))
+}
+
 x <- c(1, 2, 3)
 sumCpp(x)
 sumArr(x)
 sumR(x)
 
 cumsumCpp(x)
+geomMeanCpp(x)
+geomMeanR(x)
 
 y <- runif(1e5)
-microbenchmark::microbenchmark(
+microbenchmark(
   sumR(y),
   sumCpp(y), 
   sumArr(y),
   sum(y)
   )
 
-microbenchmark::microbenchmark(
-  base::cumsum(y),
-  cumsumCpp(y)
+z <- runif(1e3)
+microbenchmark(
+  base::cumsum(z),
+  cumsumCpp(z)
+)
+
+a <- runif(1e6)
+microbenchmark(
+  geomMeanCpp(a),
+  geomMeanR(a)
 )
 
 
