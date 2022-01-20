@@ -37,12 +37,12 @@ cppFunction(
 
 cppFunction("
   double geomMeanCpp(Rcpp::NumericVector vec) {
-      int n = vec.size();
-      double sum_log = 0.0;
+      size_t n = vec.size();
+      double slog = 0.0;
       for (auto &i: vec) {
-        sum_log += log(i);
+        slog += log(i);
       }
-      return exp(sum_log/n);
+      return exp(slog/n);
     }
 ")
 
