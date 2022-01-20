@@ -1,5 +1,5 @@
 # R-cpp-ffi
-Repo for foreign function interface using R and C++
+Repo for foreign function interface using R and C++. It is an experimental code.
 
 ## Resources
 
