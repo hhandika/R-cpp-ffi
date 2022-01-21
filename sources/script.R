@@ -43,8 +43,8 @@ microbenchmark(
   rep(1, 1e3)
 )
 
-a <- rpois(1e6,5)
-b <- rpois(1e6,5)
+a <- rpois(1e4,5)
+b <- rpois(1e4,5)
 
 microbenchmark(
   distance(a, b),
