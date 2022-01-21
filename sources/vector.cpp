@@ -4,21 +4,20 @@ Heru Handika
 Vector operation
 */
 
-#include<Rcpp.h>
+#include <Rcpp.h>
 #include <iostream>
 #include <vector>
 #include <cassert>
 #include <cmath>
 
-using namespace std;
+using namespace Rcpp;
 
 // [[Rcpp::export]]
-vector<double> vector_ones(size_t arr_size)
+NumericVector vector_ones(int arr_size)
 {
-    vector<double> res;
-    res.reserve(arr_size);
+    NumericVector res = 0;
 
-    for (size_t i = 0; i < arr_size; i++)
+    for (int i = 0; i < arr_size; i++)
     {
         res.push_back(1);
     }
@@ -27,13 +26,12 @@ vector<double> vector_ones(size_t arr_size)
 }
 
 // [[Rcpp::export]]
-vector<double> add_vector(vector<double> x, vector<double> y)
+NumericVector add_vector(NumericVector x, NumericVector y)
 {
     assert(x.size() == y.size());
-    vector<double> res;
-    res.reserve(x.size());
+    NumericVector res = 0;
 
-    for (size_t i = 0; i < x.size(); i++)
+    for (int i = 0; i < x.size(); i++)
     {
         res.push_back(x[i] + y[i]);
     }
@@ -42,13 +40,12 @@ vector<double> add_vector(vector<double> x, vector<double> y)
 }
 
 // [[Rcpp::export]]
-vector<double> substract_vector(vector<double> x, vector<double> y)
+NumericVector substract_vector(NumericVector x, NumericVector y)
 {
     assert(x.size() == y.size());
-    vector<double> res;
-    res.reserve(x.size());
+    NumericVector res = 0;
 
-    for (size_t i = 0; i < x.size(); i++)
+    for (int i = 0; i < x.size(); i++)
     {
         res.push_back(x[i] - y[i]);
     }
@@ -57,13 +54,12 @@ vector<double> substract_vector(vector<double> x, vector<double> y)
 }
 
 // [[Rcpp::export]]
-vector<double> multiply_vector(vector<double> x, vector<double> y)
+NumericVector multiply_vector(NumericVector x, NumericVector y)
 {
     assert(x.size() == y.size());
-    vector<double> res;
-    res.reserve(x.size());
+    NumericVector res = 0;
 
-    for (size_t i = 0; i < x.size(); i++)
+    for (int i = 0; i < x.size(); i++)
     {
         res.push_back(x[i] * y[i]);
     }
@@ -72,7 +68,7 @@ vector<double> multiply_vector(vector<double> x, vector<double> y)
 }
 
 // [[Rcpp::export]]
-double sum(vector<double> vec)
+double sum(NumericVector vec)
 {
     double res = 0;
     for (auto &i : vec)
@@ -84,9 +80,9 @@ double sum(vector<double> vec)
 }
 
 // [[Rcpp::export]]
-vector<double> cumsum_cpp(vector<double> vec)
+NumericVector cumsum_cpp(NumericVector vec)
 {
-    vector<double> res;
+    NumericVector res;
 
     double sum = 0;
     for (auto &i : vec)
@@ -99,7 +95,7 @@ vector<double> cumsum_cpp(vector<double> vec)
 }
 
 // [[Rcpp::export]]
-double mean_cpp(vector<double> vec)
+double mean_cpp(NumericVector vec)
 {
     double total = sum(vec);
 
@@ -107,11 +103,11 @@ double mean_cpp(vector<double> vec)
 }
 
 // [[Rcpp::export]]
-double dot_product(vector<double> x, vector<double> y)
+double dot_product(NumericVector x, NumericVector y)
 {
     assert(x.size() == y.size());
     double sum = 0.0;
-    for (size_t i = 0; i < x.size(); i++)
+    for (int i = 0; i < x.size(); i++)
     {
         sum += x[i] * y[i];
     }
@@ -120,19 +116,31 @@ double dot_product(vector<double> x, vector<double> y)
 }
 
 // [[Rcpp::export]]
-double sum_of_square(vector<double> a)
+double sum_of_square(NumericVector a)
 {
     return dot_product(a, a);
 }
 
-double magnitude(vector<double> a)
+double magnitude(NumericVector a)
 {
     return sqrt(sum_of_square(a));
 }
 
 // [[Rcpp::export]]
-double distance(vector<double> x, vector<double> y)
+double distance(NumericVector x, NumericVector y)
 {
-    vector<double> subs = substract_vector(x, y);
+    NumericVector subs = substract_vector(x, y);
     return magnitude(subs);
+}
+
+// [[Rcpp::export]]
+double geomMeanCpp(Rcpp::NumericVector vec)
+{
+    size_t n = vec.size();
+    double slog = 0.0;
+    for (auto &i : vec)
+    {
+        slog += log(i);
+    }
+    return exp(slog / n);
 }
