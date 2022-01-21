@@ -24,7 +24,6 @@ vector_ones(8)
 sum_of_square(vec)
 
 x <- rpois(1e6,5)
-x
 
 sum_of_square(x)
 sumOfSquareR(x)
@@ -39,6 +38,7 @@ microbenchmark(
 
 microbenchmark(
   vector_ones(1e3),
+  vector_ones_rev(1e3),
   replicate(1e3, 1),
   rep(1, 1e3)
 )

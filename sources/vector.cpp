@@ -26,6 +26,20 @@ NumericVector vector_ones(int arr_size)
 }
 
 // [[Rcpp::export]]
+std::vector<size_t> vector_ones_rev(int arr_size)
+{
+  std::vector<size_t> res;
+  res.reserve(arr_size);
+  
+  for (int i = 0; i < arr_size; i++)
+  {
+    res.push_back(1);
+  }
+  
+  return res;
+}
+
+// [[Rcpp::export]]
 NumericVector add_vector(NumericVector x, NumericVector y)
 {
     assert(x.size() == y.size());
